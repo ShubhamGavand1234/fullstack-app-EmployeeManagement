@@ -38,4 +38,24 @@ private EmployeeRepositoryDAO employeeRepositoryDAO;
         List<Employee> employeeList = employeeRepositoryDAO.findAll();
         return employeeList.stream().map( (employee) -> EmployeeMapper.mapToEmployeeDto(employee)).collect(Collectors.toList());
     }
+
+    @Override
+    public EmployeeDTO updateEmployee(Long employeeId, EmployeeDTO updatedEmployeeDTO) {
+        Employee searchedEmployee = employeeRepositoryDAO.findById(employeeId).orElseThrow(() -> new ResourceNotFoundException("Employee not found for given employee id " + employeeId));
+
+        searchedEmployee.setFirstName(updatedEmployeeDTO.getFirstName());
+        searchedEmployee.setLastName(updatedEmployeeDTO.getLastName());
+        searchedEmployee.setEmail(updatedEmployeeDTO.getEmail());
+
+        Employee dbUpdatedEMployee =  employeeRepositoryDAO.save(searchedEmployee); // save performs save and update both if id is avalable it performs update
+        return EmployeeMapper.mapToEmployeeDto(dbUpdatedEMployee);
+    }
+
+    @Override
+    public String deleteEmployee(Long employeeId) {
+        Employee toBeDeletedEmployee = employeeRepositoryDAO.findById(employeeId).orElseThrow(() -> new ResourceNotFoundException("Employee with given Id is not present in Database " + employeeId));
+        employeeRepositoryDAO.deleteById(employeeId);
+        return "Employee has been Deleted";
+    }
+
 }
