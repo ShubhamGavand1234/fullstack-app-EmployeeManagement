@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
-function Employee() {
+function Employee({ update, ...props }) {
   const [employeeData, setEmployeeData] = useState();
   const [missingError, setMissingError] = useState({
     firstNameMissing: false,
@@ -93,10 +93,19 @@ function Employee() {
                 <input
                   type="text"
                   name="firstName"
-                  className="form-control"
+                  className={`form-control  ${
+                    missingError.firstNameMissing ? "is-invalid" : ""
+                  }`}
                   placeholder="Enter first name"
                   onFocus={() => handleFocus("firstNameMissing")}
                 />
+                {missingError.firstNameMissing && (
+                  <div className="warning-message">
+                    <FontAwesomeIcon icon={faTriangleExclamation} />
+                    {/* Optional icon */}
+                    Please provide First Name field!
+                  </div>
+                )}
               </div>
               <div className="form-group mb-2">
                 <label htmlFor="lastName" className="form-label">
@@ -105,10 +114,19 @@ function Employee() {
                 <input
                   type="text"
                   name="lastName"
-                  className="form-control"
+                  className={`form-control  ${
+                    missingError.lastNameMissing ? "is-invalid" : ""
+                  }`}
                   placeholder="Enter last name"
                   onFocus={() => handleFocus("lastNameMissing")}
                 />
+                {missingError.lastNameMissing && (
+                  <div className="warning-message">
+                    <FontAwesomeIcon icon={faTriangleExclamation} />
+                    {/* Optional icon */}
+                    Please provide Last Name field!
+                  </div>
+                )}
               </div>
               <div className="form-group mb-2">
                 {" "}
@@ -118,10 +136,19 @@ function Employee() {
                 <input
                   type="email"
                   name="email"
-                  className="form-control"
+                  className={`form-control  ${
+                    missingError.emailMissing ? "is-invalid" : ""
+                  }`}
                   placeholder="Enter email id"
                   onFocus={() => handleFocus("emailMissing")}
                 />
+                {missingError.emailMissing && (
+                  <div className="warning-message">
+                    <FontAwesomeIcon icon={faTriangleExclamation} />
+                    {/* Optional icon */}
+                    Please provide Email id field!
+                  </div>
+                )}
               </div>
 
               <button type="submit" className="btn btn-success my-2 mx-auto">
@@ -129,28 +156,6 @@ function Employee() {
               </button>
             </form>
           </div>
-
-          {missingError.firstNameMissing && (
-            <div className="warning-message">
-              <FontAwesomeIcon icon={faTriangleExclamation} />
-              {/* Optional icon */}
-              This is a warning message! Please provide First Name field.
-            </div>
-          )}
-          {missingError.lastNameMissing && (
-            <div className="warning-message">
-              <FontAwesomeIcon icon={faTriangleExclamation} />
-              {/* Optional icon */}
-              This is a warning message! Please provide Last Name field.
-            </div>
-          )}
-          {missingError.emailMissing && (
-            <div className="warning-message">
-              <FontAwesomeIcon icon={faTriangleExclamation} />
-              {/* Optional icon */}
-              This is a warning message! Please provide Email id field.
-            </div>
-          )}
         </div>
       </div>
     </div>

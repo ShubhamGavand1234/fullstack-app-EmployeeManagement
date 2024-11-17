@@ -29,6 +29,17 @@ function ListEmployeeComponen() {
     navigator("/add-employee");
   }
 
+  function handleUpdate(empID) {
+    console.log("update", empID);
+
+    navigator("/add-employee");
+  }
+
+  function handleDelete(empID) {
+    console.log("delete", empID);
+    navigator("/");
+  }
+
   return (
     <div className="container">
       <h2 className="text-center ">List of Employees</h2>
@@ -54,6 +65,9 @@ function ListEmployeeComponen() {
               <th className="text-primary" scope="col">
                 Email
               </th>
+              <th className="text-primary" scope="col" colSpan="2">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -65,6 +79,24 @@ function ListEmployeeComponen() {
                     <td>{d.firstName}</td>
                     <td>{d.lastName}</td>
                     <td>{d.email}</td>
+                    <td>
+                      <button
+                        onClick={() => handleUpdate(d.id)}
+                        type="button"
+                        className="btn btn-primary"
+                      >
+                        Update
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => handleDelete(d.id)}
+                        type="button"
+                        className="btn btn-danger"
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 );
               })
