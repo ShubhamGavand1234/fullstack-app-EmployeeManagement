@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @AllArgsConstructor
+@CrossOrigin
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
@@ -33,6 +34,7 @@ public class EmployeeController {
     }
 
     //Build get all employees REST API
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getALlEmployees() {
         List<EmployeeDTO> employeeDTOList = employeeService.getAllEmployees();
@@ -52,4 +54,4 @@ public class EmployeeController {
         String message = employeeService.deleteEmployee(employeeID);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
-} 
+}
