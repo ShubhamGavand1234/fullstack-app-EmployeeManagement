@@ -32,7 +32,10 @@ function ListEmployeeComponen() {
   return (
     <div className="container">
       <h2 className="text-center ">List of Employees</h2>
-      <button className="btn btn-primary my-4" onClick={handleAddNewEmployee}>
+      <button
+        className="btn btn-primary my-4 mx-2"
+        onClick={handleAddNewEmployee}
+      >
         Add Employee
       </button>
       <div className="container ">

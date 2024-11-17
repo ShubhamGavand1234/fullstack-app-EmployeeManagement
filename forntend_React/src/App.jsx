@@ -9,25 +9,24 @@ import Employee from "./components/Employee";
 
 function App() {
   return (
-    <>
-      <BrowserRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
+      <div className="wrapper">
         <Header />
-        <Routes>
-          {/* http://localhost/3000/ */}
-          <Route path="/" element={<ListEmployeeComponen />}></Route>
-          {/* http://localhost/3000/employees */}
-          <Route path="/employees" element={<ListEmployeeComponen />}></Route>
-          <Route path="/add-employee" element={<Employee />}></Route>
-        </Routes>
-
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<ListEmployeeComponen />} />
+            <Route path="/employees" element={<ListEmployeeComponen />} />
+            <Route path="/add-employee" element={<Employee />} />
+          </Routes>
+        </div>
         <Footer />
-      </BrowserRouter>
-    </>
+      </div>
+    </BrowserRouter>
   );
 }
 

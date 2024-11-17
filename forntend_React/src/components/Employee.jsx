@@ -1,25 +1,61 @@
 import React, { useEffect, useState } from "react";
 import { postEmployee } from "../EmployeeService";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 function Employee() {
   const [employeeData, setEmployeeData] = useState();
-  const [missingError, setMissingError] = useState("");
+  const [missingError, setMissingError] = useState({
+    firstNameMissing: false,
+    lastNameMissing: false,
+    emailMissing: false,
+  });
+  const navigator = useNavigate();
+
+  const checkMising = (data) => {
+    if (!data.firstName) {
+      setMissingError((prev) => ({
+        ...prev,
+        firstNameMissing: true,
+      }));
+    }
+    if (!data.lastName) {
+      setMissingError((prev) => ({
+        ...prev,
+        lastNameMissing: true,
+      }));
+    }
+    if (!data.email) {
+      setMissingError((prev) => ({
+        ...prev,
+        emailMissing: true,
+      }));
+    }
+  };
 
   function handleSubmit(e) {
     e.preventDefault();
+    setMissingError({
+      firstNameMissing: false,
+      lastNameMissing: false,
+      emailMissing: false,
+    });
     const fd = new FormData(e.target);
     const data = Object.fromEntries(fd.entries());
-    console.log();
-    if (!data.firstName || !data.lastName || !data.email) {
-      setMissingError("Field Missing");
+
+    const hasErrors = !data.firstName || !data.lastName || !data.email;
+    if (hasErrors) {
+      checkMising(data);
       return;
     }
     setEmployeeData(data);
     e.target.reset();
+    navigator("/employees");
   }
 
-  function handleFocus() {
-    setMissingError("");
+  function handleFocus(field) {
+    setMissingError((prev) => ({ ...prev, [field]: false }));
   }
 
   useEffect(() => {
@@ -59,7 +95,7 @@ function Employee() {
                   name="firstName"
                   className="form-control"
                   placeholder="Enter first name"
-                  onFocus={handleFocus}
+                  onFocus={() => handleFocus("firstNameMissing")}
                 />
               </div>
               <div className="form-group mb-2">
@@ -71,7 +107,7 @@ function Employee() {
                   name="lastName"
                   className="form-control"
                   placeholder="Enter last name"
-                  onFocus={handleFocus}
+                  onFocus={() => handleFocus("lastNameMissing")}
                 />
               </div>
               <div className="form-group mb-2">
@@ -84,7 +120,7 @@ function Employee() {
                   name="email"
                   className="form-control"
                   placeholder="Enter email id"
-                  onFocus={handleFocus}
+                  onFocus={() => handleFocus("emailMissing")}
                 />
               </div>
 
@@ -94,8 +130,26 @@ function Employee() {
             </form>
           </div>
 
-          {missingError && (
-            <p className="text-danger bg-warning">{missingError}</p>
+          {missingError.firstNameMissing && (
+            <div className="warning-message">
+              <FontAwesomeIcon icon={faTriangleExclamation} />
+              {/* Optional icon */}
+              This is a warning message! Please provide First Name field.
+            </div>
+          )}
+          {missingError.lastNameMissing && (
+            <div className="warning-message">
+              <FontAwesomeIcon icon={faTriangleExclamation} />
+              {/* Optional icon */}
+              This is a warning message! Please provide Last Name field.
+            </div>
+          )}
+          {missingError.emailMissing && (
+            <div className="warning-message">
+              <FontAwesomeIcon icon={faTriangleExclamation} />
+              {/* Optional icon */}
+              This is a warning message! Please provide Email id field.
+            </div>
           )}
         </div>
       </div>
