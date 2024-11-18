@@ -27,5 +27,5 @@ export const updateEmployee = (empId, empData) => {
 };
 
 export const deleteEmployee = (empId) => {
-  return axios.get(REST_API_BASE_URL + "/" + empId);
+  return axios.delete(REST_API_BASE_URL + "/" + empId);
 };

@@ -40,16 +40,28 @@ function ListEmployeeComponen() {
   }
 
   useEffect(() => {
-    const deleteEMployee = async () => {
-      const response = await deleteEmployee(deleteID);
-      const resData = response.data;
-      console.log(resData);
-    };
-
-    if (deleteID !== undefined) {
-      deleteEMployee();
+    async function deleteEmployeeById() {
+      if (deleteID !== undefined) {
+        try {
+          await deleteEmployee(deleteID);
+          // Refresh employee list after delete
+          const response = await listEmployees();
+          setEmployees(response.data);
+        } catch (error) {
+          console.error("Error deleting employee:", error);
+        }
+      }
     }
+    deleteEmployeeById();
   }, [deleteID]);
+
+  useEffect(() => {
+    async function refreshEmployees() {
+      const response = await listEmployees();
+      setEmployees(response.data);
+    }
+    refreshEmployees();
+  }, []);
 
   return (
     <div className="container">

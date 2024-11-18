@@ -56,7 +56,7 @@ function Employee() {
       checkMising(data);
       return;
     }
-    setEmployeeData(data);
+    setEmployeeData({ ...data });
     e.target.reset();
     navigator("/employees");
   }
@@ -110,6 +110,7 @@ function Employee() {
   }, [empId]);
 
   useEffect(() => {
+    if (!employeeData || Object.keys(employeeData).length === 0) return;
     async function postEMployee() {
       try {
         const response =
@@ -121,7 +122,12 @@ function Employee() {
         if (response.status === 200 || response.status === 201) {
           const resData = response.data;
           // console.log(  resData.firstName + " is created");
-          setEmployeeData();
+          setFormData({
+            firstName: resData.firstName || "",
+            lastName: resData.lastName || "",
+            email: resData.email || "",
+          });
+          navigator("/employees");
         } else {
           console.log("Error in creating employee");
         }
