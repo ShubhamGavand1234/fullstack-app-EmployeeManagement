@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { postEmployee } from "../EmployeeService";
-import { useNavigate } from "react-router-dom";
+import { postEmployee, getEmployee, updateEmployee } from "../EmployeeService";
+import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
-function Employee({ update, ...props }) {
+function Employee() {
   const [employeeData, setEmployeeData] = useState();
   const [missingError, setMissingError] = useState({
     firstNameMissing: false,
     lastNameMissing: false,
     emailMissing: false,
   });
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+
   const navigator = useNavigate();
+  const empId = useParams();
 
   const checkMising = (data) => {
     if (!data.firstName) {
@@ -58,13 +65,62 @@ function Employee({ update, ...props }) {
     setMissingError((prev) => ({ ...prev, [field]: false }));
   }
 
+  function pageTitle() {
+    // console.log(empId, empId.id);
+
+    if (empId && empId.id) {
+      return <h2 className="text-center">Update Employee</h2>;
+    } else {
+      return <h2 className="text-center">Add Employee</h2>;
+    }
+  }
+
+  function pageButton() {
+    // console.log(empId, empId.id);
+
+    if (empId && empId.id) {
+      return (
+        <button type="submit" className="btn btn-danger my-2 mx-auto">
+          Update
+        </button>
+      );
+    } else {
+      return (
+        <button type="submit" className="btn btn-success my-2 mx-auto">
+          Submit
+        </button>
+      );
+    }
+  }
+
+  useEffect(() => {
+    async function getEMployee() {
+      const response = await getEmployee(empId.id);
+      const resData = response.data;
+      // console.log(resData);
+      setFormData({
+        firstName: resData.firstName || "",
+        lastName: resData.lastName || "",
+        email: resData.email || "",
+      });
+    }
+    if (empId.id) {
+      getEMployee();
+    }
+  }, [empId]);
+
   useEffect(() => {
     async function postEMployee() {
       try {
-        const response = await postEmployee(employeeData);
-        if (response.status === 201) {
+        const response =
+          empId && empId.id
+            ? await updateEmployee(empId.id, employeeData)
+            : await postEmployee(employeeData);
+        console.log(response.status);
+
+        if (response.status === 200 || response.status === 201) {
           const resData = response.data;
-          console.log(resData.firstName + " is created");
+          // console.log(  resData.firstName + " is created");
           setEmployeeData();
         } else {
           console.log("Error in creating employee");
@@ -83,7 +139,7 @@ function Employee({ update, ...props }) {
     <div className="container ">
       <div className="row">
         <div className="card col-md-6 offset-md-3">
-          <h2 className="text-center">Add Employee</h2>
+          {pageTitle()}
           <div className="card-body">
             <form onSubmit={handleSubmit}>
               <div className="form-group mb-2">
@@ -91,6 +147,10 @@ function Employee({ update, ...props }) {
                   First Name :
                 </label>
                 <input
+                  value={formData.firstName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, firstName: e.target.value })
+                  }
                   type="text"
                   name="firstName"
                   className={`form-control  ${
@@ -114,6 +174,10 @@ function Employee({ update, ...props }) {
                 <input
                   type="text"
                   name="lastName"
+                  value={formData.lastName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, lastName: e.target.value })
+                  }
                   className={`form-control  ${
                     missingError.lastNameMissing ? "is-invalid" : ""
                   }`}
@@ -136,6 +200,10 @@ function Employee({ update, ...props }) {
                 <input
                   type="email"
                   name="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   className={`form-control  ${
                     missingError.emailMissing ? "is-invalid" : ""
                   }`}
@@ -151,9 +219,7 @@ function Employee({ update, ...props }) {
                 )}
               </div>
 
-              <button type="submit" className="btn btn-success my-2 mx-auto">
-                Submit
-              </button>
+              {pageButton()}
             </form>
           </div>
         </div>

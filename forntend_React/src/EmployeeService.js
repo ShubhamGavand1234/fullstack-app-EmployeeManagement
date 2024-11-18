@@ -13,3 +13,19 @@ export const postEmployee = (empData) => {
     },
   });
 };
+
+export const getEmployee = (empId) => {
+  return axios.get(REST_API_BASE_URL + "/" + empId);
+};
+
+export const updateEmployee = (empId, empData) => {
+  return axios.put(REST_API_BASE_URL + "/" + empId, empData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const deleteEmployee = (empId) => {
+  return axios.get(REST_API_BASE_URL + "/" + empId);
+};

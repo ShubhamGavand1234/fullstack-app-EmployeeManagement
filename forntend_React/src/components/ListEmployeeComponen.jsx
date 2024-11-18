@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { listEmployees } from "../EmployeeService";
+import { listEmployees, deleteEmployee } from "../EmployeeService";
 import { useNavigate } from "react-router-dom";
 
 function ListEmployeeComponen() {
   const [employees, setEmployees] = useState([]);
   const navigator = useNavigate();
+  const [deleteID, setDeleteId] = useState();
 
   useEffect(() => {
     async function fetchAllEmployees() {
@@ -30,15 +31,25 @@ function ListEmployeeComponen() {
   }
 
   function handleUpdate(empID) {
-    console.log("update", empID);
-
-    navigator("/add-employee");
+    navigator(`/edit-employee/${empID}`);
   }
 
   function handleDelete(empID) {
-    console.log("delete", empID);
+    setDeleteId(empID);
     navigator("/");
   }
+
+  useEffect(() => {
+    const deleteEMployee = async () => {
+      const response = await deleteEmployee(deleteID);
+      const resData = response.data;
+      console.log(resData);
+    };
+
+    if (deleteID !== undefined) {
+      deleteEMployee();
+    }
+  }, [deleteID]);
 
   return (
     <div className="container">

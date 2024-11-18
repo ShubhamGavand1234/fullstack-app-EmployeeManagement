@@ -42,6 +42,7 @@ public class EmployeeController {
     }
 
     //Build update using Put REST API
+   @CrossOrigin
     @PutMapping("{id}")
     public ResponseEntity<EmployeeDTO> updateEmployee( @PathVariable("id") Long employeeId, @RequestBody EmployeeDTO employeeDTO){
         EmployeeDTO updatedEmployee = employeeService.updateEmployee(employeeId,employeeDTO);
@@ -49,6 +50,7 @@ public class EmployeeController {
     }
 
     //delete REST API
+    @CrossOrigin
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable("id") Long employeeID){
         String message = employeeService.deleteEmployee(employeeID);
