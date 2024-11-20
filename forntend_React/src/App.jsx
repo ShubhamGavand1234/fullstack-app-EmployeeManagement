@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 // Routing configuration
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Employee from "./components/Employee";
-
+import ModalMain from "./components/ModalMain";
 function App() {
   return (
     <BrowserRouter
@@ -25,6 +25,7 @@ function App() {
             <Route path="/edit-employee/:id" element={<Employee />} />
           </Routes>
         </div>
+        <ModalMain />
         <Footer />
       </div>
     </BrowserRouter>

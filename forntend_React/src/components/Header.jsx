@@ -1,3 +1,4 @@
+import { Modal } from "bootstrap";
 import React from "react";
 
 function Header() {
