@@ -2,6 +2,7 @@ package com.example.employeeManagement.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -13,11 +14,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors()
-                .and()
-                .csrf().disable() // Disable CSRF for development
+        http
+                .cors(Customizer.withDefaults()) // Replaces cors()
+                .csrf(csrf -> csrf.disable()) // Disable CSRF for development
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                .httpBasic(); // Using basic authentication
+                .httpBasic(Customizer.withDefaults()); // Using basic authentication
 
         return http.build();
     }

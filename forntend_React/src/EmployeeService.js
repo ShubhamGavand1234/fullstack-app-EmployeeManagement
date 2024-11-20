@@ -6,7 +6,7 @@ export const listEmployees = () => {
   return axios.get(REST_API_BASE_URL, {
     auth: {
       username: "user",
-      password: "fb99552d-9bc5-46a0-a5c5-89ca4b7fb773",
+      password: "47b1a841-3f91-407e-98d1-832004904b7a",
     },
   });
 };
@@ -18,7 +18,7 @@ export const postEmployee = (empData) => {
     {
       auth: {
         username: "user",
-        password: "fb99552d-9bc5-46a0-a5c5-89ca4b7fb773",
+        password: "47b1a841-3f91-407e-98d1-832004904b7a",
       },
     },
     {
@@ -33,7 +33,7 @@ export const getEmployee = (empId) => {
   return axios.get(REST_API_BASE_URL + "/" + empId, {
     auth: {
       username: "user",
-      password: "fb99552d-9bc5-46a0-a5c5-89ca4b7fb773",
+      password: "47b1a841-3f91-407e-98d1-832004904b7a",
     },
   });
 };
@@ -45,7 +45,7 @@ export const updateEmployee = (empId, empData) => {
     {
       auth: {
         username: "user",
-        password: "fb99552d-9bc5-46a0-a5c5-89ca4b7fb773",
+        password: "47b1a841-3f91-407e-98d1-832004904b7a",
       },
     },
     {
@@ -60,7 +60,7 @@ export const deleteEmployee = (empId) => {
   return axios.delete(REST_API_BASE_URL + "/" + empId, {
     auth: {
       username: "user",
-      password: "fb99552d-9bc5-46a0-a5c5-89ca4b7fb773",
+      password: "47b1a841-3f91-407e-98d1-832004904b7a",
     },
   });
 };
