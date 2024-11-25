@@ -16,7 +16,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(Customizer.withDefaults()) // Replaces cors()
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for development
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()); // Using basic authentication
 
