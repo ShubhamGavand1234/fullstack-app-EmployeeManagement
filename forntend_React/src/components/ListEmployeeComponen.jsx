@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { listEmployees, deleteEmployee } from "../EmployeeService";
 import { useNavigate } from "react-router-dom";
+import UserDetailsContext from "../store/UserDetails";
+import { useContext } from "react";
 
 function ListEmployeeComponen() {
   const [employees, setEmployees] = useState([]);
   const navigator = useNavigate();
   const [deleteID, setDeleteId] = useState();
 
+  const userDetailsCtx = useContext(UserDetailsContext);
+  const loginCred = {
+    username: userDetailsCtx.username,
+    password: userDetailsCtx.password,
+  };
+  console.log(
+    "before passinf cred are " + loginCred.username + " " + loginCred.password
+  );
+
   useEffect(() => {
     async function fetchAllEmployees() {
       try {
-        const response = await listEmployees();
+        const response = await listEmployees(loginCred);
         // console.log(response);
         if (response.status === 200) {
           const resData = response.data;
@@ -43,9 +54,9 @@ function ListEmployeeComponen() {
     async function deleteEmployeeById() {
       if (deleteID !== undefined) {
         try {
-          await deleteEmployee(deleteID);
+          await deleteEmployee(deleteID, loginCred);
           // Refresh employee list after delete
-          const response = await listEmployees();
+          const response = await listEmployees(loginCred);
           setEmployees(response.data);
         } catch (error) {
           console.error("Error deleting employee:", error);
@@ -57,7 +68,7 @@ function ListEmployeeComponen() {
 
   useEffect(() => {
     async function refreshEmployees() {
-      const response = await listEmployees();
+      const response = await listEmployees(loginCred);
       setEmployees(response.data);
     }
     refreshEmployees();

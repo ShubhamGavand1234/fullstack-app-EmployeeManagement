@@ -7,28 +7,49 @@ import Footer from "./components/Footer";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Employee from "./components/Employee";
 import ModalMain from "./components/ModalMain";
+import Login from "./components/Login";
+import { useState } from "react";
+
+import { UserDetailsContextProvider } from "./store/UserDetails";
+import UserDetailsContext from "./store/UserDetails";
+import { useContext } from "react";
+
 function App() {
   return (
-    <BrowserRouter
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true,
-      }}
-    >
-      <div className="wrapper">
-        <Header />
-        <div className="content">
-          <Routes>
-            <Route path="/" element={<ListEmployeeComponen />} />
-            <Route path="/employees" element={<ListEmployeeComponen />} />
-            <Route path="/add-employee" element={<Employee />} />
-            <Route path="/edit-employee/:id" element={<Employee />} />
-          </Routes>
+    <UserDetailsContextProvider>
+      <BrowserRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
+        <div className="wrapper">
+          <Header />
+          <MainContent />
+          {/* <ModalMain /> */}
+          <Footer />
         </div>
-        <ModalMain />
-        <Footer />
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </UserDetailsContextProvider>
+  );
+}
+
+function MainContent() {
+  const userDetailsCtx = useContext(UserDetailsContext);
+
+  console.log("Logged In:", userDetailsCtx);
+
+  return userDetailsCtx.username && userDetailsCtx.password ? (
+    <div className="content">
+      <Routes>
+        <Route path="/" element={<ListEmployeeComponen />} />
+        <Route path="/employees" element={<ListEmployeeComponen />} />
+        <Route path="/add-employee" element={<Employee />} />
+        <Route path="/edit-employee/:id" element={<Employee />} />
+      </Routes>
+    </div>
+  ) : (
+    <Login />
   );
 }
 
