@@ -4,6 +4,7 @@ import com.example.employeeManagement.daoRepository.EmployeeRepositoryDAO;
 import com.example.employeeManagement.dto.EmployeeDTO;
 import com.example.employeeManagement.entity.Employee;
 import com.example.employeeManagement.exception.ResourceNotFoundException;
+import com.example.employeeManagement.exception.handler.CustomExceptionHandler;
 import com.example.employeeManagement.mapper.EmployeeMapper;
 import com.example.employeeManagement.service.EmployeeService;
 import lombok.AllArgsConstructor;
@@ -29,7 +30,8 @@ private EmployeeRepositoryDAO employeeRepositoryDAO;
 
     @Override
     public EmployeeDTO getEmployeeById(Long employeeId) {
-        Employee foundEmployee = employeeRepositoryDAO.findById(employeeId).orElseThrow( () -> new ResourceNotFoundException("Employee Not found for given Id : " + employeeId));
+//        Employee foundEmployee = employeeRepositoryDAO.findById(employeeId).orElseThrow( () -> new ResourceNotFoundException("Employee Not found for given Id : " + employeeId));
+        Employee foundEmployee = employeeRepositoryDAO.findById(employeeId).orElseThrow( () -> new ResourceNotFoundException("employee not found for id" + employeeId));
         return EmployeeMapper.mapToEmployeeDto(foundEmployee);
     }
 
