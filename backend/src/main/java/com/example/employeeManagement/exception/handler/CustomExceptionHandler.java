@@ -2,6 +2,7 @@ package com.example.employeeManagement.exception.handler;
 
 import com.example.employeeManagement.dto.ErrorResponse;
 import com.example.employeeManagement.exception.ResourceNotFoundException;
+import com.example.employeeManagement.exception.ResourseCreationFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,24 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         List<String>  errorDetails = new ArrayList<>();
         errorDetails.add(e.getLocalizedMessage());
         ErrorResponse response = new ErrorResponse(NO_RECORDS_FOUND, errorDetails);
-        return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ResourseCreationFailedException.class)
+    public final ResponseEntity<ErrorResponse> handleResourseCereationFailedError(ResourseCreationFailedException e){
+        List<String> errorDetails = new ArrayList<>();
+        errorDetails.add(e.getLocalizedMessage());
+        ErrorResponse response = new ErrorResponse( BAD_REQUEST , errorDetails);
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
+        List<String> errorDetails = List.of("An unexpected error occurred: " + ex.getMessage());
+        ErrorResponse response = new ErrorResponse("INTERNAL_SERVER_ERROR", errorDetails);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
 }
