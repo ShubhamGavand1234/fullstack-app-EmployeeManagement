@@ -25,7 +25,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         List<String>  errorDetails = new ArrayList<>();
         errorDetails.add(e.getLocalizedMessage());
         ErrorResponse response = new ErrorResponse(NO_RECORDS_FOUND, errorDetails);
-        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ResourseCreationFailedException.class)
@@ -33,7 +33,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         List<String> errorDetails = new ArrayList<>();
         errorDetails.add(e.getLocalizedMessage());
         ErrorResponse response = new ErrorResponse( BAD_REQUEST , errorDetails);
-        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 
